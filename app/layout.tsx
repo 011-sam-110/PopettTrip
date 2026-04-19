@@ -18,10 +18,10 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'Poplate 2026 — Lake District',
+  title: 'Poplett 2026 — Lake District',
   description: 'A shared availability planner for our Lake District family trip',
   openGraph: {
-    title: 'Poplate 2026 — Lake District',
+    title: 'Poplett 2026 — Lake District',
     description: "Let's find our window in the Lake District",
   },
 }
