@@ -17,8 +17,13 @@ function KeswickPin() {
         className="flex items-center gap-1.5 px-4 py-1.5 rounded-full font-body text-xs font-semibold text-white"
         style={{ background: 'rgba(74,103,65,0.80)', backdropFilter: 'blur(8px)', letterSpacing: '0.08em' }}
       >
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
-          <circle cx="5" cy="5" r="3" fill="white" fillOpacity="0.9" />
+        {/* Map pin icon to the left of the label */}
+        <svg width="10" height="14" viewBox="0 0 28 36" fill="none" aria-hidden>
+          <path
+            d="M14 0C6.268 0 0 6.268 0 14c0 9.333 14 22 14 22S28 23.333 28 14C28 6.268 21.732 0 14 0z"
+            fill="white"
+          />
+          <circle cx="14" cy="14" r="5.5" fill="rgba(74,103,65,0.80)" />
         </svg>
         Keswick
       </div>
