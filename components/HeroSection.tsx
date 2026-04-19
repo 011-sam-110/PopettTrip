@@ -28,24 +28,6 @@ function KeswickPin() {
         Keswick
       </div>
 
-      {/* Dropdown pin */}
-      <div className="relative flex flex-col items-center">
-        <svg width="22" height="28" viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M14 0C6.268 0 0 6.268 0 14c0 9.333 14 22 14 22S28 23.333 28 14C28 6.268 21.732 0 14 0z"
-            fill="#4a6741"
-          />
-          <circle cx="14" cy="14" r="5.5" fill="white" />
-        </svg>
-
-        {/* Pulse ring */}
-        <motion.div
-          className="absolute rounded-full border border-white/40"
-          style={{ width: 22, height: 22, top: 0, left: 0 }}
-          animate={{ scale: [1, 2.4], opacity: [0.5, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeOut', delay: 1.8 }}
-        />
-      </div>
     </motion.div>
   )
 }
