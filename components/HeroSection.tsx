@@ -6,36 +6,41 @@ import { motion } from 'framer-motion'
 function KeswickPin() {
   return (
     <motion.div
-      className="absolute z-20 flex flex-col items-center"
-      style={{ bottom: '32%', right: '28%' }}
-      initial={{ opacity: 0, y: -12, scale: 0.8 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ delay: 1.6, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className="flex flex-col items-center mb-6"
+      variants={{
+        hidden: { opacity: 0, y: -10, scale: 0.85 },
+        show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
+      }}
     >
-      {/* Label */}
+      {/* Pill label */}
       <div
-        className="mb-2 px-3 py-1 rounded-full font-body text-xs font-semibold tracking-wider text-white"
-        style={{ background: 'rgba(74,103,65,0.85)', backdropFilter: 'blur(6px)', letterSpacing: '0.08em' }}
+        className="flex items-center gap-1.5 px-4 py-1.5 rounded-full font-body text-xs font-semibold text-white"
+        style={{ background: 'rgba(74,103,65,0.80)', backdropFilter: 'blur(8px)', letterSpacing: '0.08em' }}
       >
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
+          <circle cx="5" cy="5" r="3" fill="white" fillOpacity="0.9" />
+        </svg>
         Keswick
       </div>
 
-      {/* Pin */}
-      <svg width="28" height="36" viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M14 0C6.268 0 0 6.268 0 14c0 9.333 14 22 14 22S28 23.333 28 14C28 6.268 21.732 0 14 0z"
-          fill="#4a6741"
-        />
-        <circle cx="14" cy="14" r="5.5" fill="white" />
-      </svg>
+      {/* Dropdown pin */}
+      <div className="relative flex flex-col items-center">
+        <svg width="22" height="28" viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M14 0C6.268 0 0 6.268 0 14c0 9.333 14 22 14 22S28 23.333 28 14C28 6.268 21.732 0 14 0z"
+            fill="#4a6741"
+          />
+          <circle cx="14" cy="14" r="5.5" fill="white" />
+        </svg>
 
-      {/* Pulse ring */}
-      <motion.div
-        className="absolute rounded-full border border-moss/60"
-        style={{ width: 28, height: 28, bottom: 4, left: 0 }}
-        animate={{ scale: [1, 2.2], opacity: [0.6, 0] }}
-        transition={{ duration: 1.8, repeat: Infinity, ease: 'easeOut', delay: 2.0 }}
-      />
+        {/* Pulse ring */}
+        <motion.div
+          className="absolute rounded-full border border-white/40"
+          style={{ width: 22, height: 22, top: 0, left: 0 }}
+          animate={{ scale: [1, 2.4], opacity: [0.5, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeOut', delay: 1.8 }}
+        />
+      </div>
     </motion.div>
   )
 }
@@ -95,9 +100,6 @@ export default function HeroSection() {
         }}
       />
 
-      {/* Keswick map pin — z-20 keeps it above overlay */}
-      <KeswickPin />
-
       {/* Content */}
       <motion.div
         className="relative text-center px-6 max-w-5xl mx-auto select-none"
@@ -106,6 +108,9 @@ export default function HeroSection() {
         initial="hidden"
         animate="show"
       >
+        {/* Keswick pin — sits above eyebrow in the content flow */}
+        <KeswickPin />
+
         {/* Eyebrow */}
         <motion.p
           className="font-body text-white/70 text-xs tracking-[0.35em] uppercase mb-8"
