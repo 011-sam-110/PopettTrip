@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 
 function KeswickPin() {
@@ -60,11 +61,23 @@ const expandX = {
 }
 
 export default function HeroSection() {
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+    v.play().catch(() => {
+      // autoplay blocked — still fine, poster fallback shows
+    })
+  }, [])
+
   return (
     <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden">
-      {/* Video background */}
+      {/* Video background — explicit z-0 so Framer Motion wrappers don't obscure it */}
       <video
+        ref={videoRef}
         className="absolute inset-0 w-full h-full object-cover"
+        style={{ zIndex: 0 }}
         src="/hero.mp4"
         autoPlay
         muted
@@ -72,21 +85,23 @@ export default function HeroSection() {
         playsInline
       />
 
-      {/* Dark overlay so text stays readable */}
+      {/* Overlay — light enough to see the video clearly */}
       <div
         className="absolute inset-0"
         style={{
+          zIndex: 1,
           background:
-            'linear-gradient(to bottom, rgba(30,40,28,0.55) 0%, rgba(20,28,18,0.35) 50%, rgba(30,40,28,0.70) 100%)',
+            'linear-gradient(to bottom, rgba(15,25,12,0.35) 0%, rgba(10,18,8,0.20) 50%, rgba(15,25,12,0.50) 100%)',
         }}
       />
 
-      {/* Keswick map pin */}
+      {/* Keswick map pin — z-20 keeps it above overlay */}
       <KeswickPin />
 
       {/* Content */}
       <motion.div
-        className="relative z-10 text-center px-6 max-w-5xl mx-auto select-none"
+        className="relative text-center px-6 max-w-5xl mx-auto select-none"
+        style={{ zIndex: 10 }}
         variants={container}
         initial="hidden"
         animate="show"
@@ -129,6 +144,7 @@ export default function HeroSection() {
       {/* Scroll cue */}
       <motion.div
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/60"
+        style={{ zIndex: 10 }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.4, duration: 0.6 }}
