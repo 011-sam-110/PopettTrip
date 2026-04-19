@@ -75,13 +75,12 @@ export default function MonthGrid({
           const isTodayDate = isToday(day)
           const isSelected = selectedDates.has(dateStr)
           const isPendingRemove = pendingRemove === dateStr
-          const hasMyEntry = dayEntries.some(e => e.name === userName)
+          const isMyBusy = dayEntries.some(e => e.name === userName)
           const count = dayEntries.length
-          const isEveryoneFree = totalPeople > 1 && count === totalPeople
-          const isHighOverlap =
-            totalPeople > 1 &&
-            count >= Math.ceil(totalPeople * 0.6) &&
-            !isEveryoneFree
+          // "Many blocked" = majority of known members can't make it
+          const manyBlocked = totalPeople > 1 && count >= Math.ceil(totalPeople * 0.5)
+          // "Some blocked" = a minority have conflicts
+          const someBlocked = totalPeople > 1 && count > 0 && !manyBlocked
 
           let bgColor = 'transparent'
           let borderColor = 'transparent'
@@ -90,17 +89,17 @@ export default function MonthGrid({
             bgColor = 'rgba(196, 88, 88, 0.12)'
             borderColor = 'rgba(196, 88, 88, 0.5)'
           } else if (isSelected) {
-            bgColor = 'rgba(74, 103, 65, 0.18)'
-            borderColor = 'rgba(74, 103, 65, 0.7)'
-          } else if (isEveryoneFree) {
-            bgColor = 'rgba(45, 90, 39, 0.10)'
-            borderColor = 'rgba(45, 90, 39, 0.45)'
-          } else if (isHighOverlap) {
-            bgColor = 'rgba(201, 168, 76, 0.10)'
-            borderColor = 'rgba(201, 168, 76, 0.45)'
-          } else if (hasMyEntry) {
-            bgColor = 'rgba(74, 103, 65, 0.07)'
-            borderColor = 'rgba(74, 103, 65, 0.25)'
+            bgColor = 'rgba(196, 88, 88, 0.15)'
+            borderColor = 'rgba(196, 88, 88, 0.65)'
+          } else if (manyBlocked) {
+            bgColor = 'rgba(196, 88, 88, 0.08)'
+            borderColor = 'rgba(196, 88, 88, 0.30)'
+          } else if (someBlocked) {
+            bgColor = 'rgba(201, 168, 76, 0.08)'
+            borderColor = 'rgba(201, 168, 76, 0.35)'
+          } else if (isMyBusy) {
+            bgColor = 'rgba(138, 74, 90, 0.08)'
+            borderColor = 'rgba(138, 74, 90, 0.25)'
           }
 
           const canInteract = !isPast && !!userName
@@ -117,7 +116,7 @@ export default function MonthGrid({
                 ${isTodayDate ? 'ring-1 ring-pebble/30 ring-inset' : ''}
               `}
               style={{ backgroundColor: bgColor, borderColor }}
-              title={dayEntries.length > 0 ? dayEntries.map(e => e.name).join(', ') : undefined}
+              title={dayEntries.length > 0 ? `Busy: ${dayEntries.map(e => e.name).join(', ')}` : undefined}
             >
               {/* Date number */}
               <span
@@ -129,10 +128,10 @@ export default function MonthGrid({
                 {format(day, 'd')}
               </span>
 
-              {/* Everyone-free star */}
-              {isEveryoneFree && (
-                <span className="text-[9px] text-forest leading-none mt-0.5" aria-label="Everyone free">
-                  ✦
+              {/* Heavy-conflict warning */}
+              {manyBlocked && (
+                <span className="text-[9px] text-red-400 leading-none mt-0.5" aria-label="Many conflicts">
+                  ✕
                 </span>
               )}
 

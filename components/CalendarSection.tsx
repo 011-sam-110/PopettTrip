@@ -204,11 +204,10 @@ export default function CalendarSection() {
           Availability planner
         </p>
         <h2 className="font-display text-4xl md:text-5xl font-bold italic text-earth-text leading-tight">
-          When are you free?
+          When can&apos;t you make it?
         </h2>
         <p className="font-body text-pebble mt-3 text-base">
-          Tap dates to mark when you can make it. Everyone&apos;s availability shows
-          up live.
+          Tap dates to mark when you&apos;re not free. We&apos;ll find the gaps where everyone can make it.
         </p>
       </motion.div>
 
@@ -264,7 +263,7 @@ export default function CalendarSection() {
       {/* No-name nudge */}
       {!userName && (
         <p className="text-center font-body text-pebble py-8 text-sm">
-          Enter your name above to start marking your availability ↑
+          Enter your name above to start marking your unavailable dates ↑
         </p>
       )}
 
@@ -310,16 +309,16 @@ export default function CalendarSection() {
       {allNames.length > 1 && (
         <div className="mt-10 flex flex-wrap gap-5 text-xs font-body text-pebble">
           <div className="flex items-center gap-2">
-            <span className="inline-block w-3 h-3 rounded-sm border border-forest/50 bg-forest/10" />
-            Everyone free
+            <span className="inline-block w-3 h-3 rounded-sm border border-red-300 bg-red-50" />
+            Many can&apos;t make it (50 %+)
           </div>
           <div className="flex items-center gap-2">
             <span className="inline-block w-3 h-3 rounded-sm border border-gold/50 bg-gold/10" />
-            High overlap (60 %+)
+            Some conflicts
           </div>
           <div className="flex items-center gap-2">
-            <span className="inline-block w-3 h-3 rounded-sm border border-moss/30 bg-moss/8" />
-            Your dates
+            <span className="inline-block w-3 h-3 rounded-sm border border-pebble/20 bg-pebble/5" />
+            Your busy dates
           </div>
         </div>
       )}
@@ -351,7 +350,7 @@ export default function CalendarSection() {
                 type="text"
                 value={pendingComment}
                 onChange={e => setPendingComment(e.target.value)}
-                placeholder="Add a note — optional…"
+                placeholder="Reason — optional (e.g. holiday, work)…"
                 className="w-full bg-white/10 rounded-lg px-3 py-2 font-body text-sm outline-none placeholder:text-white/30 focus:bg-white/15 transition-colors"
               />
               <button
@@ -359,7 +358,7 @@ export default function CalendarSection() {
                 disabled={saving}
                 className="w-full bg-moss hover:bg-forest text-white rounded-lg py-2.5 font-body text-sm font-semibold transition-colors disabled:opacity-50"
               >
-                {saving ? 'Saving…' : 'Confirm my availability'}
+                {saving ? 'Saving…' : 'Mark as unavailable'}
               </button>
             </div>
           </motion.div>
@@ -378,14 +377,14 @@ export default function CalendarSection() {
           >
             <div className="bg-earth-text text-earth-bg rounded-2xl shadow-2xl p-4 flex flex-col gap-3">
               <p className="font-body text-sm">
-                Remove your availability for{' '}
+                Mark yourself as free on{' '}
                 <strong>
                   {format(
                     new Date(pendingRemove + 'T00:00:00'),
                     'EEEE d MMMM'
                   )}
                 </strong>
-                ?
+                ? (removes your conflict)
               </p>
               <div className="flex gap-3">
                 <button

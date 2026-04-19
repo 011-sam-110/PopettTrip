@@ -10,10 +10,11 @@ export default function BestDates({ entriesByDate, allNames }: BestDatesProps) {
   const totalPeople = allNames.length
   if (totalPeople < 2) return null
 
+  // Sort ascending — fewest conflicts = best dates
   const ranked = Object.entries(entriesByDate)
     .map(([date, entries]) => ({ date, count: entries.length }))
     .filter(d => d.count > 0)
-    .sort((a, b) => b.count - a.count || a.date.localeCompare(b.date))
+    .sort((a, b) => a.count - b.count || a.date.localeCompare(b.date))
     .slice(0, 5)
 
   if (ranked.length === 0) return null
@@ -21,11 +22,11 @@ export default function BestDates({ entriesByDate, allNames }: BestDatesProps) {
   return (
     <div className="mb-12 p-6 md:p-8 rounded-2xl border border-fog bg-white/40 backdrop-blur-sm">
       <p className="font-body text-xs tracking-[0.25em] uppercase text-pebble mb-4">
-        Best dates so far
+        Least conflicts
       </p>
       <div className="flex flex-wrap gap-3">
         {ranked.map(({ date, count }) => {
-          const isEveryone = count === totalPeople
+          const allBlocked = count === totalPeople
           const parsedDate = new Date(date + 'T00:00:00')
           return (
             <div
@@ -33,9 +34,11 @@ export default function BestDates({ entriesByDate, allNames }: BestDatesProps) {
               className={`
                 px-4 py-3 rounded-xl border text-sm transition-all
                 ${
-                  isEveryone
-                    ? 'bg-forest/10 border-forest/40 text-forest'
-                    : 'bg-fog/60 border-fog text-earth-text'
+                  allBlocked
+                    ? 'bg-red-50 border-red-200 text-red-700'
+                    : count === 1
+                    ? 'bg-fog/60 border-fog text-earth-text'
+                    : 'bg-gold/5 border-gold/30 text-earth-text'
                 }
               `}
             >
@@ -43,9 +46,9 @@ export default function BestDates({ entriesByDate, allNames }: BestDatesProps) {
                 {format(parsedDate, 'EEE d MMM')}
               </div>
               <div className="font-body text-xs opacity-60 mt-0.5">
-                {count} of {totalPeople} free
-                {isEveryone && (
-                  <span className="ml-1 text-forest font-medium">· everyone!</span>
+                {count} of {totalPeople} can&apos;t make it
+                {allBlocked && (
+                  <span className="ml-1 text-red-500 font-medium">· everyone busy</span>
                 )}
               </div>
             </div>
