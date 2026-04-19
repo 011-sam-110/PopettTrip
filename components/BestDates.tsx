@@ -6,9 +6,9 @@ interface BestDatesProps {
   allNames: string[]
 }
 
-export default function BestDates({ entriesByDate, allNames }: BestDatesProps) {
-  const totalPeople = allNames.length
-  if (totalPeople < 2) return null
+export default function BestDates(_props: BestDatesProps) {
+  return null
+}
 
   // Sort ascending — fewest conflicts = best dates
   const ranked = Object.entries(entriesByDate)
